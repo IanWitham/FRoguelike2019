@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Roguelike2019", "Roguelike2019\Roguelike2019.fsproj", "{C11D72C2-A6E5-4380-BCBF-A5BBCE8504A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C11D72C2-A6E5-4380-BCBF-A5BBCE8504A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11D72C2-A6E5-4380-BCBF-A5BBCE8504A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11D72C2-A6E5-4380-BCBF-A5BBCE8504A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11D72C2-A6E5-4380-BCBF-A5BBCE8504A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90859469-6841-4A1D-919E-DD7D73981894}
+	EndGlobalSection
+EndGlobal
