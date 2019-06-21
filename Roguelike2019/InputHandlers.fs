@@ -9,7 +9,7 @@ let folder (playerX, playerY) (key : SadConsole.Input.AsciiKey) =
         | Keys.Right -> (playerX + 1, playerY)
         | Keys.Up -> (playerX, playerY - 1)
         | Keys.Down -> (playerX, playerY + 1)
-        | Keys.None -> (playerX, playerY)
+        | _ -> (playerX, playerY)
 
 let handleKeys keys gameState =
     List.fold folder gameState keys
