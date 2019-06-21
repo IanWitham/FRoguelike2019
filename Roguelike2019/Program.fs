@@ -19,15 +19,8 @@ let kb = new SadConsole.Input.Keyboard()
 
 
 
-let Init() : unit = 
-    // Any startup code for your game. We will use an example console for now
-    let startingConsole = SadConsole.Global.CurrentScreen;
-
-    //startingConsole.FillWithRandomGarbage();
-    //startingConsole.Fill (Rectangle (3, 3, 27, 5), System.Nullable(Color.Red), System.Nullable(Color.Black), System.Nullable(0), System.Nullable(SpriteEffects.None)) |> ignore
-    //startingConsole.Print(6, 5, "Hello from SadConsole", ColorAnsi.CyanBright);
-    
-    startingConsole.SetGlyph(width / 2, height / 2, (int) playerChar);
+//let Init() : unit = 
+//    // Any startup code for your game. We will use an example console for now
 
 let Update (gt : GameTime) : unit = 
     kb.Update(gt)
@@ -44,7 +37,7 @@ let Draw (gt : GameTime) : unit =
 let main argv =
     SadConsole.Game.Create(width, height)    
 
-    SadConsole.Game.OnInitialize <- new Action(Init)
+    //SadConsole.Game.OnInitialize <- new Action(Init)
     SadConsole.Game.OnUpdate <- new Action<GameTime>(Update)
     SadConsole.Game.OnDraw <- new Action<GameTime>(Draw)
             
