@@ -30,10 +30,8 @@ let Update (gt : GameTime) : unit =
     
     // Handle fullscreen toggle outside of the gamestate type.
     // I.e. it's not a "state" that should be saved with the game.
-    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.F5)
+    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Enter) && SadConsole.Global.KeyboardState.IsKeyDown(Keys.LeftAlt)
         then SadConsole.Settings.ToggleFullScreen() |> ignore
-    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
-        then SadConsole.Game.Instance.Exit() |> ignore
 
     playerPosition  <- handleKeys keyList playerPosition
 
@@ -41,6 +39,11 @@ let Update (gt : GameTime) : unit =
 let Draw (gt : GameTime) : unit =
     let startingConsole = SadConsole.Global.CurrentScreen;
     let playerX, playerY = playerPosition
+
+    kb.Update(gt)
+    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
+        then SadConsole.Game.Instance.Exit() |> ignore
+
     startingConsole.Fill(System.Nullable(Color.White), System.Nullable(Color.Black), System.Nullable(0)) |> ignore
     startingConsole.SetGlyph(playerX, playerY, (int) playerChar)
 
