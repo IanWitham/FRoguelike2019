@@ -32,6 +32,8 @@ let Update (gt : GameTime) : unit =
     // I.e. it's not a "state" that should be saved with the game.
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.F5)
         then SadConsole.Settings.ToggleFullScreen() |> ignore
+    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
+        then SadConsole.Game.Instance.Exit() |> ignore
 
     playerPosition  <- handleKeys keyList playerPosition
 
@@ -46,7 +48,7 @@ let Draw (gt : GameTime) : unit =
 let main argv =
     SadConsole.Game.Create(width, height)    
 
-    //SadConsole.Settings.UseHardwareFullScreen <- true
+    SadConsole.Settings.UseHardwareFullScreen <- false
 
     //SadConsole.Game.OnInitialize <- new Action(Init)
     SadConsole.Game.OnUpdate <- new Action<GameTime>(Update)
