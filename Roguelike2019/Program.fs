@@ -4,6 +4,7 @@ open System
 open SadConsole
 open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
+open Microsoft.Xna.Framework.Input
 open InputHandlers
 
 //let Console = SadConsole.Console
@@ -22,10 +23,18 @@ let kb = new SadConsole.Input.Keyboard()
 //let Init() : unit = 
 //    // Any startup code for your game. We will use an example console for now
 
+
 let Update (gt : GameTime) : unit = 
     kb.Update(gt)
     let keyList = List.ofSeq kb.KeysPressed
-    playerPosition <- handleKeys keyList playerPosition
+    
+    // Handle fullscreen toggle outside of the gamestate type.
+    // I.e. it's not a "state" that should be saved with the game.
+    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.F5)
+        then SadConsole.Settings.ToggleFullScreen() |> ignore
+
+    playerPosition  <- handleKeys keyList playerPosition
+
 
 let Draw (gt : GameTime) : unit =
     let startingConsole = SadConsole.Global.CurrentScreen;
@@ -36,6 +45,8 @@ let Draw (gt : GameTime) : unit =
 [<EntryPoint>]
 let main argv =
     SadConsole.Game.Create(width, height)    
+
+    //SadConsole.Settings.UseHardwareFullScreen <- true
 
     //SadConsole.Game.OnInitialize <- new Action(Init)
     SadConsole.Game.OnUpdate <- new Action<GameTime>(Update)
