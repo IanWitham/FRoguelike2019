@@ -25,7 +25,7 @@ let mutable world = {
 
 let kb = new SadConsole.Input.Keyboard()
 
-let console = SadConsole.Global.CurrentScreen;
+
 
 //let Init() : unit = 
 //    // Any startup code for your game. We will use an example console for now
@@ -43,6 +43,8 @@ let Update (gt : GameTime) : unit =
     world <- handleKeys world keyList
 
 let Draw (gt : GameTime) : unit =
+
+    let console = SadConsole.Global.CurrentScreen;
 
     kb.Update(gt)
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
