@@ -25,6 +25,23 @@ let ``InitGameMap test`` () =
         }, gameMap)
 
 [<Fact>]
+let ``CoordinateToIndex test`` () = 
+    Assert.Equal(4, CoordinateToIndex 3 1 1)
+    Assert.Equal(18, CoordinateToIndex 13 5 1)
+
+[<Fact>]
+let ``SetTile test`` () =
+    let tiles = [
+        { Blocked = true; BlockSight = true }
+        { Blocked = true; BlockSight = false }
+        { Blocked = false; BlockSight = true }
+    ]
+    let actual = SetTile tiles { Blocked = false; BlockSight = false } 1
+    Assert.Equal({ Blocked = true; BlockSight = true }, actual.[0])
+    Assert.Equal({ Blocked = false; BlockSight = false }, actual.[1])
+    Assert.Equal({ Blocked = false; BlockSight = true }, actual.[2])
+
+[<Fact>]
 let ``Move test`` () =
     let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
     let movedEntity = Move entity 10 20

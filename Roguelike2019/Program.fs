@@ -55,7 +55,7 @@ let Draw (gt : GameTime) : unit =
     let drawEntity = DrawingFunctions.drawEntity console
 
     // Render Npcs
-    List.map drawEntity world.Npcs |> ignore
+    List.iter drawEntity world.Npcs 
 
     // Render player
     drawEntity world.Player |> ignore
