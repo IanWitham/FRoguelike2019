@@ -11,6 +11,20 @@ let ``My test`` () =
     Assert.True(true)
 
 [<Fact>]
+let ``InitTile test`` () =
+    let tile = InitTile 0
+    Assert.Equal({ Blocked = false; BlockSight = false }, tile)
+
+[<Fact>]
+let ``InitGameMap test`` () =
+    let gameMap = InitGameMap 3 2
+    Assert.Equal({
+        Width = 3;
+        Height = 2;
+        Tiles = [ InitTile 0; InitTile 1; InitTile 2; InitTile 3; InitTile 4; InitTile 5; ]
+        }, gameMap)
+
+[<Fact>]
 let ``Move test`` () =
     let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
     let movedEntity = Move entity 10 20
