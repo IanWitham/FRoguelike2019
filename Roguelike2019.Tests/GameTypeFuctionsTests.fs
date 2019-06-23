@@ -30,13 +30,18 @@ let ``CoordinateToIndex test`` () =
     Assert.Equal(18, CoordinateToIndex 13 5 1)
 
 [<Fact>]
+let ``IndexToCoordinate test`` () = 
+    Assert.Equal((1, 1), IndexToCoordinate 3 4)
+    Assert.Equal((5, 1), IndexToCoordinate 13 18)
+
+[<Fact>]
 let ``SetTile test`` () =
     let tiles = [
         { Blocked = true; BlockSight = true }
         { Blocked = true; BlockSight = false }
         { Blocked = false; BlockSight = true }
     ]
-    let actual = SetTile tiles { Blocked = false; BlockSight = false } 1
+    let actual = tiles |> SetTile { Blocked = false; BlockSight = false } 1
     Assert.Equal({ Blocked = true; BlockSight = true }, actual.[0])
     Assert.Equal({ Blocked = false; BlockSight = false }, actual.[1])
     Assert.Equal({ Blocked = false; BlockSight = true }, actual.[2])

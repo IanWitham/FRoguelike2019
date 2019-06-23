@@ -7,6 +7,7 @@ open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
 
 open GameTypes
+open GameTypeFunctions
 
 open InputHandlers
 
@@ -18,9 +19,16 @@ let height = 25
 let player = {X=width / 2; Y=height / 2; Char='@'; Color=Color.Red}
 let testNpc = {X=10; Y=10; Char='D'; Color=Color.Green}
 
+let gameMap =
+    InitGameMap width 25
+    |> SetGameMapTile { Blocked = true; BlockSight = true } (CoordinateToIndex 80 30 22) 
+    |> SetGameMapTile { Blocked = true; BlockSight = true } (CoordinateToIndex 80 31 22) 
+    |> SetGameMapTile { Blocked = true; BlockSight = true } (CoordinateToIndex 80 32 22) 
+
 let mutable world = {
-    Player = player;
+    Player = player
     Npcs = [testNpc]
+    GameMap = gameMap
 }
 
 let kb = new SadConsole.Input.Keyboard()
@@ -42,6 +50,13 @@ let Update (gt : GameTime) : unit =
 
     world <- handleKeys world keyList
 
+let DrawTile width i tile =
+    let tileColor = match tile with
+    | { BlockSight = true } -> Colors.DarkWall
+    | _ -> Colors.DarkGround
+    let (x, y) = IndexToCoordinate width i
+    SadConsole.Global.CurrentScreen.SetBackground(x, y, tileColor)
+
 let Draw (gt : GameTime) : unit =
 
     let console = SadConsole.Global.CurrentScreen;
@@ -50,7 +65,9 @@ let Draw (gt : GameTime) : unit =
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
         then SadConsole.Game.Instance.Exit() |> ignore
 
-    console.Fill(System.Nullable(Color.White), System.Nullable(Color.Black), System.Nullable(0)) |> ignore
+    console.Fill(System.Nullable(), System.Nullable(), System.Nullable(0)) |> ignore
+
+    List.iteri (DrawTile world.GameMap.Width) world.GameMap.Tiles
 
     let drawEntity = DrawingFunctions.drawEntity console
 

@@ -14,4 +14,5 @@ type Entity = {
 type World = {
     Player : Entity;
     Npcs : Entity list;
+    GameMap : GameMap;
 }

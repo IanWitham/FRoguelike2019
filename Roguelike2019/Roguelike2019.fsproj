@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Colors.fs" />
     <Compile Include="GameTypes.fs" />
     <Compile Include="GameTypeFunctions.fs" />
     <Compile Include="InputHandlers.fs" />
