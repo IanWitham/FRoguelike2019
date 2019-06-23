@@ -25,7 +25,7 @@ let mutable world = {
 
 let kb = new SadConsole.Input.Keyboard()
 
-
+let console = SadConsole.Global.CurrentScreen;
 
 //let Init() : unit = 
 //    // Any startup code for your game. We will use an example console for now
@@ -43,19 +43,20 @@ let Update (gt : GameTime) : unit =
     world <- handleKeys world keyList
 
 let Draw (gt : GameTime) : unit =
-    let startingConsole = SadConsole.Global.CurrentScreen;
 
     kb.Update(gt)
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
         then SadConsole.Game.Instance.Exit() |> ignore
 
-    startingConsole.Fill(System.Nullable(Color.White), System.Nullable(Color.Black), System.Nullable(0)) |> ignore
+    console.Fill(System.Nullable(Color.White), System.Nullable(Color.Black), System.Nullable(0)) |> ignore
+
+    let drawEntity = DrawingFunctions.drawEntity console
 
     // Render Npcs
-    List.map (fun npc -> startingConsole.SetGlyph(npc.X, npc.Y, (int) npc.Char, npc.Color)) world.Npcs |> ignore
+    List.map drawEntity world.Npcs |> ignore
 
     // Render player
-    startingConsole.SetGlyph(world.Player.X, world.Player.Y, (int) world.Player.Char, world.Player.Color)
+    drawEntity world.Player |> ignore
 
 [<EntryPoint>]
 let main argv =
