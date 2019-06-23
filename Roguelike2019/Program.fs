@@ -5,6 +5,9 @@ open SadConsole
 open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
+
+open GameTypes
+
 open InputHandlers
 
 //let Console = SadConsole.Console
@@ -12,9 +15,13 @@ open InputHandlers
 let width = 80
 let height = 25
 
-let playerChar = '@'
+let player = {X=width / 2; Y=height / 2; Char='@'; Color=Color.Red}
+let testNpc = {X=10; Y=10; Char='D'; Color=Color.Green}
 
-let mutable playerPosition = (width / 2, height / 2)
+let mutable world = {
+    Player = player;
+    Npcs = [testNpc]
+}
 
 let kb = new SadConsole.Input.Keyboard()
 
@@ -33,19 +40,22 @@ let Update (gt : GameTime) : unit =
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Enter) && SadConsole.Global.KeyboardState.IsKeyDown(Keys.LeftAlt)
         then SadConsole.Settings.ToggleFullScreen() |> ignore
 
-    playerPosition  <- handleKeys keyList playerPosition
-
+    world <- handleKeys world keyList
 
 let Draw (gt : GameTime) : unit =
     let startingConsole = SadConsole.Global.CurrentScreen;
-    let playerX, playerY = playerPosition
 
     kb.Update(gt)
     if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
         then SadConsole.Game.Instance.Exit() |> ignore
 
     startingConsole.Fill(System.Nullable(Color.White), System.Nullable(Color.Black), System.Nullable(0)) |> ignore
-    startingConsole.SetGlyph(playerX, playerY, (int) playerChar)
+
+    // Render Npcs
+    List.map (fun npc -> startingConsole.SetGlyph(npc.X, npc.Y, (int) npc.Char, npc.Color)) world.Npcs |> ignore
+
+    // Render player
+    startingConsole.SetGlyph(world.Player.X, world.Player.Y, (int) world.Player.Char, world.Player.Color)
 
 [<EntryPoint>]
 let main argv =
