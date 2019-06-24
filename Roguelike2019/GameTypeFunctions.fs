@@ -2,7 +2,7 @@
 
 open GameTypes
 
-let MoveEntity entity move = { entity with X = entity.X + move.DX; Y = entity.Y + move.DY }
+let MoveEntity entity (dx, dy) = { entity with X = entity.X + dx; Y = entity.Y + dy }
 
 let InitTile _ = { Blocked = false; BlockSight = false; }
 

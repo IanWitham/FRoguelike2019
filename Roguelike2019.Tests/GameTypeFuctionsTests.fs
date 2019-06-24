@@ -49,7 +49,7 @@ let ``SetTile test`` () =
 [<Fact>]
 let ``Move test`` () =
     let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
-    let movedEntity = MoveEntity entity { DX = 10; DY = 20 }
+    let movedEntity = MoveEntity entity (10, 20)
     Assert.Equal(
         { X=10; Y=20; Char='&'; Color=Color.DarkSeaGreen },
         movedEntity
@@ -58,7 +58,7 @@ let ``Move test`` () =
 [<Fact>]
 let ``Move test 2`` () =
     let entity = { X=89; Y=4; Char='='; Color=Color.Chartreuse }
-    let movedEntity = MoveEntity entity { DX = (-3);  DY = (-40) }
+    let movedEntity = MoveEntity entity (-3, -40)
     Assert.Equal(
         {X=86; Y=(-36); Char='='; Color=Color.Chartreuse },
         movedEntity

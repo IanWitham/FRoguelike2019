@@ -36,25 +36,23 @@ let mutable world = {
 let kb = SadConsole.Input.Keyboard()
 
 let Update (gt : GameTime) : unit = 
-    
     // Get the key presses for this update cycle
     kb.Update(gt)
-    let keysDown = List.map (fun (x:AsciiKey) -> x.Key) <| List.ofSeq kb.KeysDown
-    let keysPressed = List.tryHead <| List.ofSeq kb.KeysPressed;
-    
-    // Only handle one keypress per update. Is this a problem? ¯\_(ツ)_/¯
-    // Also pass in keysDown to check for modifiers
-    let command =
-        match keysPressed with
-        | Some keys -> GetCommand keysDown keys.Key
-        | None -> None
-
-    // Some commands change the world state, some don't
-    match command with
-    | Some (Move m)         -> world <- { world with Player = MoveEntity world.Player m }
-    | Some Quit             -> SadConsole.Game.Instance.Exit()
-    | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
-    | None                  -> () // return unit (i.e. do nothing)
+    let keysDown =
+        List.ofSeq kb.KeysDown
+        |> List.map (fun (x:AsciiKey) -> x.Key)
+    let keysPressed =
+        List.ofSeq kb.KeysPressed
+        |> List.map (fun (x:AsciiKey) -> x.Key)
+        
+    for keyPressed in keysPressed do
+        let command = GetCommand keysDown keyPressed
+        // Some commands change the world state, some don't
+        match command with
+        | Some (Move m)         -> world <- { world with Player = MoveEntity world.Player m }
+        | Some Quit             -> SadConsole.Game.Instance.Exit()
+        | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
+        | None                  -> () // return unit (i.e. do nothing)
 
 let DrawTile width i tile =
     let tileColor = 

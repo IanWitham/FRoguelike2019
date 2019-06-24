@@ -1,7 +1,5 @@
 ﻿module GameTypes
 
-type Move = { DX : int; DY : int }
-
 type Tile = { Blocked: bool; BlockSight: bool }
 
 type GameMap = { Tiles: Tile list; Width: int; Height: int; }

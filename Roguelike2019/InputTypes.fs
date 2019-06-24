@@ -1,6 +1,6 @@
 ﻿module InputTypes
 
 type Command = 
-    | Move of GameTypes.Move
+    | Move of ( int * int )
     | Quit 
     | ToggleFullScreen 
