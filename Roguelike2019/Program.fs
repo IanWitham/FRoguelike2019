@@ -9,6 +9,7 @@ open Microsoft.Xna.Framework.Input
 open GameTypes
 open GameTypeFunctions
 
+open InputTypes
 open InputHandlers
 
 //let Console = SadConsole.Console
@@ -40,15 +41,23 @@ let kb = new SadConsole.Input.Keyboard()
 
 
 let Update (gt : GameTime) : unit = 
-    kb.Update(gt)
-    let keyList = List.ofSeq kb.KeysPressed
     
-    // Handle fullscreen toggle outside of the gamestate type.
-    // I.e. it's not a "state" that should be saved with the game.
-    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Enter) && SadConsole.Global.KeyboardState.IsKeyDown(Keys.LeftAlt)
-        then SadConsole.Settings.ToggleFullScreen() |> ignore
+    kb.Update(gt)
+    let keysPressed = List.ofSeq kb.KeysPressed // ofSeq converts Enumerable to F# List type
+    let keysDown = List.ofSeq kb.KeysDown;
+    
+    // Only handle one keypress per update. Is this a problem? ¯\_(ツ)_/¯
+    // Also pass in keysDown to check for modifiers
+    let command =
+        if keysPressed.IsEmpty then None
+        else GetCommand keysDown keysPressed.Head
 
-    world <- handleKeys world keyList
+    // Some commands change the world state, some don't
+    match command with
+    | Some (Move m)         -> world <- { world with Player = MoveEntity world.Player m }
+    | Some Quit             -> SadConsole.Game.Instance.Exit()
+    | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
+    | None                  -> () // return unit (i.e. do nothing)
 
 let DrawTile width i tile =
     let tileColor = match tile with
@@ -60,10 +69,6 @@ let DrawTile width i tile =
 let Draw (gt : GameTime) : unit =
 
     let console = SadConsole.Global.CurrentScreen;
-
-    kb.Update(gt)
-    if SadConsole.Global.KeyboardState.IsKeyPressed(Keys.Escape)
-        then SadConsole.Game.Instance.Exit() |> ignore
 
     console.Fill(System.Nullable(), System.Nullable(), System.Nullable(0)) |> ignore
 
