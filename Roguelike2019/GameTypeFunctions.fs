@@ -14,7 +14,6 @@ let CoordinateToIndex width x y =
 let IndexToCoordinate width i = 
     (i % width, i / width)
 
-
 let SetTile newTile i tiles = 
     List.mapi (fun i2 originalTile -> if i = i2 then newTile else originalTile) tiles
 

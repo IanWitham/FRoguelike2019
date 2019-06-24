@@ -8,12 +8,10 @@ open SadConsole.Input
 
 open GameTypes
 open GameTypeFunctions
-
 open InputTypes
 open InputHandlers
-open SadConsole.Input
+open DrawingFunctions
 
-//let Console = SadConsole.Console
 
 let width = 80
 let height = 25
@@ -35,16 +33,16 @@ let mutable world = {
 
 let kb = SadConsole.Input.Keyboard()
 
-let Update (gt : GameTime) : unit = 
+let Update gameTime = 
     // Get the key presses for this update cycle
-    kb.Update(gt)
+    kb.Update(gameTime)
     let keysDown =
         List.ofSeq kb.KeysDown
-        |> List.map (fun (x:AsciiKey) -> x.Key)
+        |> List.map (fun x -> x.Key)
     let keysPressed =
         List.ofSeq kb.KeysPressed
-        |> List.map (fun (x:AsciiKey) -> x.Key)
-        
+        |> List.map (fun x -> x.Key)
+    
     for keyPressed in keysPressed do
         let command = GetCommand keysDown keyPressed
         // Some commands change the world state, some don't
@@ -54,15 +52,7 @@ let Update (gt : GameTime) : unit =
         | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
         | None                  -> () // return unit (i.e. do nothing)
 
-let DrawTile width i tile =
-    let tileColor = 
-        match tile with
-        | { BlockSight = true } -> Colors.DarkWall
-        | _ -> Colors.DarkGround
-    let (x, y) = IndexToCoordinate width i
-    SadConsole.Global.CurrentScreen.SetBackground(x, y, tileColor)
-
-let Draw (gt : GameTime) : unit =
+let Draw gameTime =
 
     let console = SadConsole.Global.CurrentScreen;
 
@@ -70,7 +60,7 @@ let Draw (gt : GameTime) : unit =
 
     List.iteri (DrawTile world.GameMap.Width) world.GameMap.Tiles
 
-    let drawEntity = DrawingFunctions.drawEntity console
+    let drawEntity = drawEntity console
 
     // Render Npcs
     List.iter drawEntity world.Npcs 
@@ -90,8 +80,7 @@ let main argv =
             
     // Start the game.
     SadConsole.Game.Instance.Run();
-    SadConsole.Game.Instance.Dispose();
 
-    printfn "Hello World from F#! %d" width
+    SadConsole.Game.Instance.Dispose();
     0 // return an integer exit code
 
