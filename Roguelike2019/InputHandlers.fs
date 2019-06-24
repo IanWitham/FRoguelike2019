@@ -8,10 +8,10 @@ open GameTypes
 open GameTypeFunctions
 open SadConsole.Input
 
-let GetCommand (keysDown : AsciiKey list) (key : AsciiKey) =
+let GetCommand keysDown keyPressed =
     let getKey (ak : AsciiKey) = ak.Key
     let asciiKeysDown = List.map getKey keysDown
-    match getKey key with
+    match getKey keyPressed with
     | Keys.Left ->      Some <| Move { DX = (-1); DY = 0 }
     | Keys.Right ->     Some <| Move { DX = 1; DY = 0 }
     | Keys.Up ->        Some <| Move { DX = 0; DY = (-1) }
