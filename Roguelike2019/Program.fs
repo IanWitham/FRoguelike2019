@@ -1,16 +1,17 @@
 ﻿// Learn more about F# at http://fsharp.org
 
 open System
-open SadConsole
 open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
+open SadConsole.Input
 
 open GameTypes
 open GameTypeFunctions
 
 open InputTypes
 open InputHandlers
+open SadConsole.Input
 
 //let Console = SadConsole.Console
 
@@ -32,25 +33,21 @@ let mutable world = {
     GameMap = gameMap
 }
 
-let kb = new SadConsole.Input.Keyboard()
-
-
-
-//let Init() : unit = 
-//    // Any startup code for your game. We will use an example console for now
-
+let kb = SadConsole.Input.Keyboard()
 
 let Update (gt : GameTime) : unit = 
     
+    // Get the key presses for this update cycle
     kb.Update(gt)
-    let keysPressed = List.ofSeq kb.KeysPressed // ofSeq converts Enumerable to F# List type
-    let keysDown = List.ofSeq kb.KeysDown;
+    let keysDown = List.map (fun (x:AsciiKey) -> x.Key) <| List.ofSeq kb.KeysDown
+    let keysPressed = List.tryHead <| List.ofSeq kb.KeysPressed;
     
     // Only handle one keypress per update. Is this a problem? ¯\_(ツ)_/¯
     // Also pass in keysDown to check for modifiers
     let command =
-        if keysPressed.IsEmpty then None
-        else GetCommand keysDown keysPressed.Head
+        match keysPressed with
+        | Some keys -> GetCommand keysDown keys.Key
+        | None -> None
 
     // Some commands change the world state, some don't
     match command with
@@ -60,9 +57,10 @@ let Update (gt : GameTime) : unit =
     | None                  -> () // return unit (i.e. do nothing)
 
 let DrawTile width i tile =
-    let tileColor = match tile with
-    | { BlockSight = true } -> Colors.DarkWall
-    | _ -> Colors.DarkGround
+    let tileColor = 
+        match tile with
+        | { BlockSight = true } -> Colors.DarkWall
+        | _ -> Colors.DarkGround
     let (x, y) = IndexToCoordinate width i
     SadConsole.Global.CurrentScreen.SetBackground(x, y, tileColor)
 
