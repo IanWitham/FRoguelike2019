@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Colors.fs" />
     <Compile Include="GameTypes.fs" />
@@ -14,10 +13,5 @@
     <Compile Include="DrawingFunctions.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
-    <PackageReference Include="SadConsole" Version="8.6.0" />
-  </ItemGroup>
-
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
