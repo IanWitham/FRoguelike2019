@@ -454,3 +454,4 @@ Scripts/
 
 !.paket/paket.exe
 .ionide/symbolCache.db
+.ionide/symbolCache.db
