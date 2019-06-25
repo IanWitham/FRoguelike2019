@@ -12,8 +12,13 @@ let ``My test`` () =
 
 [<Fact>]
 let ``InitTile test`` () =
-    let tile = InitTile 0
+    let tile = InitTile 0 0
     Assert.Equal({ Blocked = false; BlockSight = false }, tile)
+
+[<Fact>]
+let ``InitTile test 2`` =    
+    let tile = InitTile 4 7
+    Assert.Equal({ Blocked = false; BlockSight = false }, tile)    
 
 [<Fact>]
 let ``InitGameMap test`` () =
@@ -21,45 +26,33 @@ let ``InitGameMap test`` () =
     Assert.Equal({
         Width = 3;
         Height = 2;
-        Tiles = [ InitTile 0; InitTile 1; InitTile 2; InitTile 3; InitTile 4; InitTile 5; ]
+        Tiles = 
+        array2D [
+                [ InitTile 0 0; InitTile 1 0; InitTile 2 0 ]
+                [ InitTile 0 1; InitTile 1 1; InitTile 2 1 ] ]
         }, gameMap)
 
 [<Fact>]
-let ``CoordinateToIndex test`` () = 
-    Assert.Equal(4, CoordinateToIndex 3 1 1)
-    Assert.Equal(18, CoordinateToIndex 13 5 1)
-
-[<Fact>]
-let ``IndexToCoordinate test`` () = 
-    Assert.Equal((1, 1), IndexToCoordinate 3 4)
-    Assert.Equal((5, 1), IndexToCoordinate 13 18)
-
-[<Fact>]
-let ``SetTile test`` () =
-    let tiles = [
-        { Blocked = true; BlockSight = true }
-        { Blocked = true; BlockSight = false }
-        { Blocked = false; BlockSight = true }
-    ]
-    let actual = tiles |> SetTile { Blocked = false; BlockSight = false } 1
-    Assert.Equal({ Blocked = true; BlockSight = true }, actual.[0])
-    Assert.Equal({ Blocked = false; BlockSight = false }, actual.[1])
-    Assert.Equal({ Blocked = false; BlockSight = true }, actual.[2])
-
-[<Fact>]
-let ``Move test`` () =
+let ``Move horizontal test`` () =
     let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
-    let movedEntity = MoveEntity entity (10, 20)
+    let tiles = array2D [[ { Blocked = false; BlockSight=false }; { Blocked = false; BlockSight=false } ]]
+    let move = (1, 0)
+    let movedEntity = MoveEntity tiles entity move
     Assert.Equal(
-        { X=10; Y=20; Char='&'; Color=Color.DarkSeaGreen },
+        { X=1; Y=0; Char='&'; Color=Color.DarkSeaGreen },
         movedEntity
         )
 
 [<Fact>]
-let ``Move test 2`` () =
-    let entity = { X=89; Y=4; Char='='; Color=Color.Chartreuse }
-    let movedEntity = MoveEntity entity (-3, -40)
+let ``Move vertical test`` () =
+    let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
+    let tiles = array2D [
+            [ { Blocked = false; BlockSight=false } ]
+            [ { Blocked = false; BlockSight=false } ]]
+    let move = (0, 1)
+    let movedEntity = MoveEntity tiles entity move
     Assert.Equal(
-        {X=86; Y=(-36); Char='='; Color=Color.Chartreuse },
+        { X=0; Y=1; Char='&'; Color=Color.DarkSeaGreen },
         movedEntity
-        )
+        )        
+

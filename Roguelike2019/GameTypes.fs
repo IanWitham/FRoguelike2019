@@ -2,7 +2,7 @@
 
 type Tile = { Blocked: bool; BlockSight: bool }
 
-type GameMap = { Tiles: Tile list; Width: int; Height: int; }
+type GameMap = { Tiles: Tile [,]; Width: int; Height: int; }
 
 type Entity = {
     X : int;

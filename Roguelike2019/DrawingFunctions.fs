@@ -1,15 +1,14 @@
 ﻿module DrawingFunctions
 
 open GameTypes
-open GameTypeFunctions
 
-let drawEntity (console : SadConsole.Console) entity =
+let DrawEntity (console : SadConsole.Console) entity =
     console.SetGlyph(entity.X, entity.Y, (int) entity.Char, entity.Color)
 
-let DrawTile width i tile =
-    let tileColor = 
-        match tile with
-        | { BlockSight = true } -> Colors.DarkWall
-        | _ -> Colors.DarkGround
-    let (x, y) = IndexToCoordinate width i
-    SadConsole.Global.CurrentScreen.SetBackground(x, y, tileColor)
+let TileColor tile =
+    match tile with
+    | { Blocked = true } -> Colors.DarkWall
+    | _ -> Colors.DarkGround
+
+let DrawTile y x tile =
+    SadConsole.Global.CurrentScreen.SetBackground(x, y, TileColor tile)
