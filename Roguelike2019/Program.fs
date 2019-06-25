@@ -56,7 +56,7 @@ let Draw gameTime =
 
     let console = SadConsole.Global.CurrentScreen;
 
-    console.Fill(System.Nullable(), System.Nullable(), System.Nullable(0)) |> ignore
+    console.Fill(System.Nullable(), System.Nullable(), System.Nullable(0))
 
     List.iteri (DrawTile world.GameMap.Width) world.GameMap.Tiles
 
