@@ -3,9 +3,10 @@
 open GameTypes
 
 let MoveEntity (tiles : Tile [,]) entity (dx, dy) =
+    let (x, y) = entity.Position
     try
-        match tiles.[ entity.Y+dy, entity.X+dx ] with
-        | { Blocked = false } -> { entity with X = entity.X + dx; Y = entity.Y + dy }
+        match tiles.[ y+dy, x+dx ] with
+        | { Blocked = false } -> { entity with Position = (x + dx, y + dy) }
         | _ -> entity
     with
     | :? System.IndexOutOfRangeException -> entity

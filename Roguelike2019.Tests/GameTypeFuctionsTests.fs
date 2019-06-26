@@ -34,25 +34,25 @@ let ``InitGameMap test`` () =
 
 [<Fact>]
 let ``Move horizontal test`` () =
-    let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
+    let entity = { Position=(0, 0); Char='&'; Color=Color.DarkSeaGreen }
     let tiles = array2D [[ { Blocked = false; BlockSight=false }; { Blocked = false; BlockSight=false } ]]
     let move = (1, 0)
     let movedEntity = MoveEntity tiles entity move
     Assert.Equal(
-        { X=1; Y=0; Char='&'; Color=Color.DarkSeaGreen },
+        { Position=(1, 0); Char='&'; Color=Color.DarkSeaGreen },
         movedEntity
         )
 
 [<Fact>]
 let ``Move vertical test`` () =
-    let entity = { X=0; Y=0; Char='&'; Color=Color.DarkSeaGreen }
+    let entity = { Position=(0, 0); Char='&'; Color=Color.DarkSeaGreen }
     let tiles = array2D [
             [ { Blocked = false; BlockSight=false } ]
             [ { Blocked = false; BlockSight=false } ]]
     let move = (0, 1)
     let movedEntity = MoveEntity tiles entity move
     Assert.Equal(
-        { X=0; Y=1; Char='&'; Color=Color.DarkSeaGreen },
+        { Position=(0, 1); Char='&'; Color=Color.DarkSeaGreen },
         movedEntity
         )        
 

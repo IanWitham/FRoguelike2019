@@ -5,6 +5,7 @@ open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
 open SadConsole.Input
+open SadConsole
 
 open GameTypes
 open GameTypeFunctions
@@ -13,11 +14,19 @@ open InputHandlers
 open DrawingFunctions
 
 
-let width = 80
+let width = 40
 let height = 25
 
-let player = {X=width / 2; Y=height / 2; Char='@'; Color=Color.Red}
-let testNpc = {X=10; Y=10; Char='D'; Color=Color.Green}
+let player = {
+    Position=(width / 2, height / 2)
+    Char='@'
+    Color=Color.Red
+    }
+let testNpc = {
+    Position=(10, 10)
+    Char='D'
+    Color=Color.Green
+    }
 
 let gameMap = InitGameMap width height
 Array2D.set gameMap.Tiles 0 0 { Blocked = true; BlockSight = false }
@@ -29,6 +38,8 @@ let mutable world = {
     Npcs = [testNpc]
     GameMap = gameMap
 }
+
+let mutable mapConsole : SadConsole.Console = null
 
 let kb = SadConsole.Input.Keyboard()
 
@@ -43,42 +54,42 @@ let Update gameTime =
         |> List.map (fun x -> x.Key)
     
     for keyPressed in keysPressed do
-        
-        printfn "KeyPressed! %A" keyPressed
-
         let command = GetCommand keysDown keyPressed
         // Some commands change the world state, some don't
         match command with
-        | Some (Move m)         -> world <- { world with Player = MoveEntity world.GameMap.Tiles world.Player m }
+        | Some (Move m)         ->
+            // Clear player's existing position
+            let (x, y) = world.Player.Position
+            DrawTile mapConsole y x world.GameMap.Tiles.[y,x]
+            world <- { world with Player = MoveEntity world.GameMap.Tiles world.Player m }
+            DrawEntity mapConsole world.Player
         | Some Quit             -> SadConsole.Game.Instance.Exit()
         | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
         | None                  -> () // return unit (i.e. do nothing)
 
-let Draw gameTime =
-
-    let console = SadConsole.Global.CurrentScreen;
-
-    console.Fill(System.Nullable(), System.Nullable(), System.Nullable(0)) |> ignore
-
+let Init () = 
+    mapConsole <- SadConsole.Console(width, height)
+    SadConsole.Global.CurrentScreen.Children.Add(mapConsole)
     // Render the map
-    Array2D.iteri DrawTile world.GameMap.Tiles
+    Array2D.iteri (DrawTile mapConsole) world.GameMap.Tiles
+    List.iter (DrawEntity mapConsole) world.Npcs 
+    // Make sure the entity layer is transparent
+    DrawEntity mapConsole world.Player
+    
 
-    let drawEntity = DrawEntity console
-    // Render Npcs
-    List.iter drawEntity world.Npcs 
-    // Render player
-    drawEntity world.Player |> ignore
+// let Draw gameTime =
+//     ()
 
 [<EntryPoint>]
 let main argv =
     SadConsole.Game.Create(width, height)    
-
     SadConsole.Settings.UseHardwareFullScreen <- false
 
     //SadConsole.Game.OnInitialize <- new Action(Init)
     SadConsole.Game.OnUpdate <- new Action<GameTime>(Update)
-    SadConsole.Game.OnDraw <- new Action<GameTime>(Draw)
-            
+    //SadConsole.Game.OnDraw <- new Action<GameTime>(Draw)
+    SadConsole.Game.OnInitialize <- new Action(Init)
+
     // Start the game.
     SadConsole.Game.Instance.Run();
 

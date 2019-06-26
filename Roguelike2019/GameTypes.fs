@@ -5,8 +5,7 @@ type Tile = { Blocked: bool; BlockSight: bool }
 type GameMap = { Tiles: Tile [,]; Width: int; Height: int; }
 
 type Entity = {
-    X : int;
-    Y : int;
+    Position : (int * int);
     Char : char;
     Color : Microsoft.Xna.Framework.Color;
     }

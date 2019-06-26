@@ -2,13 +2,20 @@
 
 open GameTypes
 
-let DrawEntity (console : SadConsole.Console) entity =
-    console.SetGlyph(entity.X, entity.Y, (int) entity.Char, entity.Color)
+let ClearEntity (console : SadConsole.Console) { Position = (x, y); Char = char; Color = color } =
+    console.SetGlyph(x, y, 0)
+
+let DrawEntity (console : SadConsole.Console) { Position = (x, y); Char = char; Color = color } =
+    console.SetGlyph(x, y, (int) char, color)
 
 let TileColor tile =
     match tile with
     | { Blocked = true } -> Colors.DarkWall
     | _ -> Colors.DarkGround
 
-let DrawTile y x tile =
-    SadConsole.Global.CurrentScreen.SetBackground(x, y, TileColor tile)
+let DrawTile (console : SadConsole.Console) y x tile =
+    match tile with
+    | { Blocked = true } ->
+        console.SetGlyph(x, y, 1, Microsoft.Xna.Framework.Color.White, TileColor tile)
+    | { Blocked = false } -> 
+        console.SetGlyph(x, y, (int) '.', Microsoft.Xna.Framework.Color.White, TileColor tile)
