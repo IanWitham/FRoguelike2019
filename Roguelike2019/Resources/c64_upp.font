@@ -1,0 +1,10 @@
+﻿{
+  "Name": "c64_upp",
+  "FilePath": "c64_upp.png",
+  "GlyphHeight": 8,
+  "GlyphWidth": 8,
+  "GlyphPadding": 0,
+  "SolidGlyphIndex": 160,
+  "Columns": 32,
+  "IsSadExtended": false
+}

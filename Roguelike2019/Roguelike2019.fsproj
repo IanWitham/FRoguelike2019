@@ -5,6 +5,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Resources\c64_upp.font">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\c64_upp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Colors.fs" />
     <Compile Include="GameTypes.fs" />
     <Compile Include="GameTypeFunctions.fs" />
@@ -13,5 +19,6 @@
     <Compile Include="DrawingFunctions.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

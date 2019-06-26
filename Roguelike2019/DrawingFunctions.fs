@@ -18,4 +18,4 @@ let DrawTile (console : SadConsole.Console) y x tile =
     | { Blocked = true } ->
         console.SetGlyph(x, y, 1, Microsoft.Xna.Framework.Color.White, TileColor tile)
     | { Blocked = false } -> 
-        console.SetGlyph(x, y, (int) '.', Microsoft.Xna.Framework.Color.White, TileColor tile)
+        console.SetGlyph(x, y, 46, Microsoft.Xna.Framework.Color.White, TileColor tile)

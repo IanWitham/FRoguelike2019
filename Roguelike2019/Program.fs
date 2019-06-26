@@ -20,12 +20,12 @@ let height = 25
 let player = {
     Position=(width / 2, height / 2)
     Char='@'
-    Color=Color.Red
+    Color=Colors.Red
     }
 let testNpc = {
     Position=(10, 10)
     Char='D'
-    Color=Color.Green
+    Color=Colors.Green
     }
 
 let gameMap = InitGameMap width height
@@ -68,21 +68,25 @@ let Update gameTime =
         | None                  -> () // return unit (i.e. do nothing)
 
 let Init () = 
-    mapConsole <- SadConsole.Console(width, height)
+
+    //let fontMaster = SadConsole.Global.LoadFont("Resources/c64_upp.font")
+    //let font =  fontMaster.GetFont(Font.FontSizes.One)
+
+    mapConsole <- SadConsole.Console(width, height)//, font)
     SadConsole.Global.CurrentScreen.Children.Add(mapConsole)
     // Render the map
     Array2D.iteri (DrawTile mapConsole) world.GameMap.Tiles
     List.iter (DrawEntity mapConsole) world.Npcs 
     // Make sure the entity layer is transparent
     DrawEntity mapConsole world.Player
-    
 
 // let Draw gameTime =
 //     ()
 
 [<EntryPoint>]
 let main argv =
-    SadConsole.Game.Create(width, height)    
+
+    SadConsole.Game.Create("Resources/c64_upp.font", width, height)    
     SadConsole.Settings.UseHardwareFullScreen <- false
 
     //SadConsole.Game.OnInitialize <- new Action(Init)
