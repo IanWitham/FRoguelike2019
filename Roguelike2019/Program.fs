@@ -12,26 +12,32 @@ open GameTypeFunctions
 open InputTypes
 open InputHandlers
 open DrawingFunctions
+open MapTypes
+open MapFunctions
 
 
-let width = 40
-let height = 25
+let screenWidth = 40
+let screenHeight = 25
+
+let mapWidth = 80
+let mapHeight = 40
+
+let roomMinSize = 6
+let roomMaxSize = 10
+let maxRooms = 30
 
 let player = {
-    Position=(width / 2, height / 2)
-    Char='@'
+    Position=(21, 16)
+    Char=0
     Color=Colors.Red
     }
 let testNpc = {
     Position=(10, 10)
-    Char='D'
+    Char=0
     Color=Colors.Green
     }
 
-let gameMap = InitGameMap width height
-Array2D.set gameMap.Tiles 0 0 { Blocked = true; BlockSight = false }
-Array2D.set gameMap.Tiles 0 1 { Blocked = true; BlockSight = false }
-Array2D.set gameMap.Tiles 0 2 { Blocked = true; BlockSight = false }
+let gameMap = InitGameMap maxRooms roomMinSize roomMaxSize mapWidth mapHeight 
 
 let mutable world = {
     Player = player
@@ -65,17 +71,20 @@ let Update gameTime =
                 DrawTile mapConsole y x world.GameMap.Tiles.[y,x]
                 world <- { world with Player = MoveEntity world.Player m }
                 DrawEntity mapConsole world.Player
+                mapConsole.Position <- Point((screenWidth/2) - (x+dx), (screenHeight / 2) - (y+dy))
             else ()
         | Some Quit             -> SadConsole.Game.Instance.Exit()
         | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
         | None                  -> () // return unit (i.e. do nothing)
+
+
 
 let Init () = 
 
     //let fontMaster = SadConsole.Global.LoadFont("Resources/c64_upp.font")
     //let font =  fontMaster.GetFont(Font.FontSizes.One)
 
-    mapConsole <- SadConsole.Console(width, height)//, font)
+    mapConsole <- SadConsole.Console(mapWidth, mapHeight)//, font)
     SadConsole.Global.CurrentScreen.Children.Add(mapConsole)
     // Render the map
     Array2D.iteri (DrawTile mapConsole) world.GameMap.Tiles
@@ -83,13 +92,17 @@ let Init () =
     // Make sure the entity layer is transparent
     DrawEntity mapConsole world.Player
 
+    // center the player
+    let (x, y) = world.Player.Position
+    mapConsole.Position <- Point((screenWidth/2) - x, (screenHeight / 2) - y)
+
 // let Draw gameTime =
 //     ()
 
 [<EntryPoint>]
 let main argv =
 
-    SadConsole.Game.Create("Resources/c64_upp.font", width, height)    
+    SadConsole.Game.Create("Resources/c64_upp.font", screenWidth, screenHeight)    
     SadConsole.Settings.UseHardwareFullScreen <- false
 
     //SadConsole.Game.OnInitialize <- new Action(Init)

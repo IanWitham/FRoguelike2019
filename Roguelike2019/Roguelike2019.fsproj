@@ -1,17 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Resources\c64_upp.font">
+    <Content Include="Resources/c64_upp.font">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\c64_upp.png">
+    <Content Include="Resources/c64_upp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Colors.fs" />
+    <Compile Include="MapTypes.fs" />
+    <Compile Include="MapFunctions.fs" />
     <Compile Include="GameTypes.fs" />
     <Compile Include="GameTypeFunctions.fs" />
     <Compile Include="InputTypes.fs" />
@@ -19,6 +20,5 @@
     <Compile Include="DrawingFunctions.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,17 +1,13 @@
 ﻿module GameTypes
 
-type Tile = { Blocked: bool; BlockSight: bool }
-
-type GameMap = { Tiles: Tile [,]; Width: int; Height: int; }
-
 type Entity = {
     Position : (int * int);
-    Char : char;
+    Char : int;
     Color : Microsoft.Xna.Framework.Color;
     }
 
 type World = {
     Player : Entity;
     Npcs : Entity list;
-    GameMap : GameMap;
+    GameMap : MapTypes.GameMap;
 }
