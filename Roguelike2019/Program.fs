@@ -60,9 +60,12 @@ let Update gameTime =
         | Some (Move m)         ->
             // Clear player's existing position
             let (x, y) = world.Player.Position
-            DrawTile mapConsole y x world.GameMap.Tiles.[y,x]
-            world <- { world with Player = MoveEntity world.GameMap.Tiles world.Player m }
-            DrawEntity mapConsole world.Player
+            let (dx, dy) = m
+            if not <| IsBlocked world.GameMap (x+dx) (y+dy)  then
+                DrawTile mapConsole y x world.GameMap.Tiles.[y,x]
+                world <- { world with Player = MoveEntity world.Player m }
+                DrawEntity mapConsole world.Player
+            else ()
         | Some Quit             -> SadConsole.Game.Instance.Exit()
         | Some ToggleFullScreen -> SadConsole.Settings.ToggleFullScreen()
         | None                  -> () // return unit (i.e. do nothing)

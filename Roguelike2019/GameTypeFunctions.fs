@@ -2,16 +2,11 @@
 
 open GameTypes
 
-let MoveEntity (tiles : Tile [,]) entity (dx, dy) =
+let MoveEntity entity (dx, dy) =
     let (x, y) = entity.Position
-    try
-        match tiles.[ y+dy, x+dx ] with
-        | { Blocked = false } -> { entity with Position = (x + dx, y + dy) }
-        | _ -> entity
-    with
-    | :? System.IndexOutOfRangeException -> entity
+    { entity with Position = (x + dx, y + dy) }
 
-let InitTile x y = { Blocked = false; BlockSight = false; }
+let InitTile x y = { Blocked = true; BlockSight = true; }
 
 let InitGameMap width height =
     {
@@ -19,3 +14,11 @@ let InitGameMap width height =
         Height = height
         Tiles = Array2D.init height width InitTile
     }
+
+let IsBlocked (gameMap : GameMap) x y =
+    y < 0
+    || y > gameMap.Height - 1
+    || x < 0
+    || x > gameMap.Width - 1
+    || gameMap.Tiles.[y,x].Blocked
+

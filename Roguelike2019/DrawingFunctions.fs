@@ -16,6 +16,6 @@ let TileColor tile =
 let DrawTile (console : SadConsole.Console) y x tile =
     match tile with
     | { Blocked = true } ->
-        console.SetGlyph(x, y, 1, Microsoft.Xna.Framework.Color.White, TileColor tile)
+        console.SetGlyph(x, y, 1, Colors.DarkGrey, TileColor tile)
     | { Blocked = false } -> 
-        console.SetGlyph(x, y, 46, Microsoft.Xna.Framework.Color.White, TileColor tile)
+        console.SetGlyph(x, y, 46, Colors.Purple, TileColor tile)
