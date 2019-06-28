@@ -24,20 +24,23 @@ let mapHeight = 40
 
 let roomMinSize = 6
 let roomMaxSize = 10
-let maxRooms = 30
+let maxRoomsTries = 2000
 
-let player = {
-    Position=(21, 16)
-    Char=0
-    Color=Colors.Red
-    }
+
 let testNpc = {
     Position=(10, 10)
     Char=0
     Color=Colors.Green
     }
 
-let gameMap = InitGameMap maxRooms roomMinSize roomMaxSize mapWidth mapHeight 
+let gameMap, playerPosition =
+    InitGameMap maxRoomsTries roomMinSize roomMaxSize mapWidth mapHeight 
+
+let player = {
+    Position=playerPosition
+    Char=0
+    Color=Colors.LightRed
+    }
 
 let mutable world = {
     Player = player

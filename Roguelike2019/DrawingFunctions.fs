@@ -8,7 +8,7 @@ let ClearEntity (console : SadConsole.Console) { Position = (x, y); Char = char;
 
 let DrawEntity (console : SadConsole.Console) { Position = (x, y); Char = char; Color = color } =
     console.SetGlyph(x, y, char, color)
-    
+
 let TileColor tile =
     match tile with
     | { Blocked = true } -> Colors.DarkWall
@@ -17,6 +17,6 @@ let TileColor tile =
 let DrawTile (console : SadConsole.Console) y x tile =
     match tile with
     | { Blocked = true } ->
-        console.SetGlyph(x, y, 32 * 7 + 6, Colors.DarkGrey, TileColor tile)
+        console.SetGlyph(x, y, 32 * 7 + 6, TileColor tile, Colors.DarkGrey)
     | { Blocked = false } -> 
-        console.SetGlyph(x, y, 46, Colors.Purple, TileColor tile)
+        console.SetGlyph(x, y, 46, TileColor tile, Colors.DarkGrey)

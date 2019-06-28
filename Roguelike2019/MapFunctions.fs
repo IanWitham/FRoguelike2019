@@ -43,19 +43,41 @@ let RandomRoom (rnd : System.Random) roomMinSize roomMaxSize mapWidth mapHeight 
     let y = rnd.Next(0, mapHeight - h)
     { X = x; Y = y; W = w; H = h }
 
-let private roomFolder (roomSource : Rect seq, rooms : Rect list) i =
-    let roomSource2 = Seq.skipWhile (fun randRoom -> List.exists (RectsOverlap randRoom) rooms ) roomSource
-    let (roomSourceHead, roomSourceTail) = (Seq.head roomSource2, Seq.tail roomSource2)
-    (roomSourceTail, roomSourceHead :: rooms)
+//let private roomFolder (rooms : Rect list) randomRoom =
+//    // accumulates a list of non overlapping rooms
+//    let roomSource2 = Seq.skipWhile (fun randRoom -> List.exists (RectsOverlap randRoom) rooms ) roomSource
+//    let (roomSourceHead, roomSourceTail) = (Seq.head roomSource2, Seq.tail roomSource2)
+//    (roomSourceTail, roomSourceHead :: rooms)
 
-let InitGameMap maxRooms roomMinSize roomMaxSize mapWidth mapHeight =
+let rec private filterOutOverlaps (rooms : Rect list) =
+    match rooms with
+    | x :: xs -> x :: (filterOutOverlaps <| List.filter (RectsOverlap x >> not) xs)
+    | [] -> []
+
+let private joinRooms gameMap (rnd : System.Random) (r1, r2) =
+    let x1, y1 = RectCenter r1
+    let x2, y2 = RectCenter r2
+    match rnd.Next(1) with
+    | 0 ->
+        CreateHTunnel gameMap x1 x2 y1
+        CreateVTunnel gameMap y1 y2 x2
+    | _ ->
+        CreateVTunnel gameMap y1 y2 x2
+        CreateHTunnel gameMap x1 x2 y1
+
+let InitGameMap maxRoomTries roomMinSize roomMaxSize mapWidth mapHeight =
     let tiles = Array2D.create mapHeight mapWidth { Blocked=true; BlockSight=true }
-    let rnd = System.Random()
+    let rng = System.Random()
     let gameMap = { Tiles = tiles; Width = mapWidth; Height = mapHeight; }
 
-    let infiniteRooms = Seq.initInfinite <| RandomRoom rnd roomMinSize roomMaxSize mapWidth mapHeight
-
-    let (_, rooms) = Seq.fold roomFolder (infiniteRooms, []) (seq { 1 .. maxRooms })
-
+    // create no more than maxRoomTries non-overlapping random rooms    
+    let rooms =
+        List.init maxRoomTries (RandomRoom rng roomMinSize roomMaxSize mapWidth mapHeight)
+        |> filterOutOverlaps
+    
     List.iter (fun r -> CreateRoom gameMap r ) rooms
-    gameMap
+
+    // create corridors
+    List.pairwise rooms |> List.iter (joinRooms gameMap rng)
+
+    (gameMap, RectCenter <| List.head rooms)
