@@ -15,6 +15,7 @@
     <Compile Include="MapFunctions.fs" />
     <Compile Include="GameTypes.fs" />
     <Compile Include="GameTypeFunctions.fs" />
+    <Compile Include="FieldOfViewFuncs.fs" />
     <Compile Include="InputTypes.fs" />
     <Compile Include="InputHandlers.fs" />
     <Compile Include="DrawingFunctions.fs" />

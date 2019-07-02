@@ -2,6 +2,9 @@ module MapFunctions
 
 open MapTypes
 
+let private WallTile = { Blocked = true; BlockSight = true; Visible = false; Explored = false }
+let private OpenTile = { Blocked = false; BlockSight = false; Visible = false; Explored = false }
+
 let CreateRoom gameMap rect =
     let length1 = rect.H - 2
     let length2 = rect.W - 2
@@ -10,7 +13,7 @@ let CreateRoom gameMap rect =
         Array2D.create 
             length1
             length2
-            { Blocked = false; BlockSight = false; }
+            OpenTile
     // copy to the map
     Array2D.blit
         roomTiles
@@ -21,11 +24,11 @@ let CreateRoom gameMap rect =
 
 let CreateHTunnel gameMap x1 x2 y =
     for x in [x1..x2] do
-        gameMap.Tiles.[y,x] <- { Blocked = false; BlockSight = false; }
+        gameMap.Tiles.[y,x] <- OpenTile
 
 let CreateVTunnel gameMap y1 y2 x = 
     for y in [y1..y2] do
-        gameMap.Tiles.[y,x] <- { Blocked = false; BlockSight = false; }
+        gameMap.Tiles.[y,x] <- OpenTile
 
 let RectCenter rect =
     (rect.X + rect.W / 2, rect.Y + rect.H / 2)
@@ -66,7 +69,7 @@ let private joinRooms gameMap (rnd : System.Random) (r1, r2) =
         CreateHTunnel gameMap x1 x2 y1
 
 let InitGameMap maxRoomTries roomMinSize roomMaxSize mapWidth mapHeight =
-    let tiles = Array2D.create mapHeight mapWidth { Blocked=true; BlockSight=true }
+    let tiles = Array2D.create mapHeight mapWidth WallTile
     let rng = System.Random()
     let gameMap = { Tiles = tiles; Width = mapWidth; Height = mapHeight; }
 
